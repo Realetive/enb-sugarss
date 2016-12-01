@@ -2,16 +2,16 @@ var vow       = require('vow'),
     EOL       = require('os').EOL,
     path      = require('path'),
     postcss   = require('postcss'),
+    sugarss   = require('sugarss'),
     buildFlow = require('enb').buildFlow || require('enb/lib/build-flow');
 
 module.exports = buildFlow.create()
-    .name('enb-postcss')
+    .name('enb-sugarss')
     .target('target', '?.css')
     .defineOption('plugins')
-    .defineOption('parser')
     .defineOption('comments', false)
     .defineOption('sourcemap', false)
-    .useFileList(['post.css', 'css'])
+    .useFileList(['sss', 'css'])
     .builder(function (files) {
         var _this = this,
             dirname = this.node.getDir(),
@@ -48,9 +48,21 @@ module.exports = buildFlow.create()
                 } else {
                     return importState;
                 }
-            }).join('\n');
+            }).join('\n'),
+            plugins = [
+                require( 'postcss-import' )({
+                    transform: function( css, filename ) {
+                        if ( path.extname( filename ) === '.css' ) {
+                            return postcss().process( css, { stringifier: sugarss } ).then( function ( result ) {
+                                return result.content;
+                            });
+                        }
+                    }
+                })
+            ].push(_this._plugins)
 
-        return postcss(_this._plugins)
+
+        return postcss(plugins)
             .process(css, {
                 from: filename,
                 to: filename,
@@ -75,7 +87,7 @@ module.exports = buildFlow.create()
          * @return {string}
          */
         getImportState: function (file, relativePath) {
-            return '@import "' + relativePath + '";';
+            return '@import "' + relativePath + '"';
         }
     })
     .createTech();

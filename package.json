@@ -1,7 +1,7 @@
 {
-  "name": "enb-postcss",
+  "name": "enb-sugarss",
   "version": "1.2.0",
-  "description": "PostCSS tech for enb builder",
+  "description": "SugarSS (with PostCSS) tech for enb builder",
   "keywords": [
     "bem",
     "enb-plugin",
@@ -12,6 +12,7 @@
   "dependencies": {
     "postcss": "^5.2.6",
     "postcss-import": "^8.2.0",
+    "sugarss": "^0.2.0",
     "vow": "^0.4.13"
   },
   "peerDependencies": {
@@ -21,7 +22,7 @@
     "jscs": "^2.1.1",
     "jshint": "^2.8.0"
   },
-  "main": "techs/css-postcss.js",
+  "main": "techs/css-sugarss.js",
   "scripts": {
     "test": "npm run jshint && npm run jscs",
     "jshint": "jshint .",
@@ -29,11 +30,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/theprotein/enb-postcss.git"
+    "url": "git://github.com/Realetive/enb-sugarss.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/theprotein/enb-postcss/issues"
+    "url": "https://github.com/Realetive/enb-sugarss/issues"
   },
-  "homepage": "https://github.com/theprotein/enb-postcss"
+  "homepage": "https://github.com/Realetive/enb-sugarss"
 }
