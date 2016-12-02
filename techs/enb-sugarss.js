@@ -3,7 +3,9 @@ var vow       = require('vow'),
     path      = require('path'),
     postcss   = require('postcss'),
     sugarss   = require('sugarss'),
-    buildFlow = require('enb').buildFlow || require('enb/lib/build-flow');
+    buildFlow = require('enb').buildFlow || require('enb/lib/build-flow'),
+    path = require('path'),
+    fs = require( 'fs' );
 
 module.exports = buildFlow.create()
     .name('enb-sugarss')
@@ -48,26 +50,28 @@ module.exports = buildFlow.create()
                 } else {
                     return importState;
                 }
-            }).join('\n'),
-            plugins = [
-                require( 'postcss-import' )({
-                    transform: function( css, filename ) {
-                        if ( path.extname( filename ) === '.css' ) {
-                            return postcss().process( css, { stringifier: sugarss } ).then( function ( result ) {
-                                return result.content;
-                            });
-                        }
+            }).join('\n');
+
+        _this._plugins.unshift(
+            require( 'postcss-import' )({
+                transform: function( css, filename ) {
+                    if ( path.extname( filename ) === '.css' ) {
+                        return postcss().process( css, { stringifier: sugarss } ).then( function ( result ) {
+                            return result.content;
+                        });
                     }
-                })
-            ].push(_this._plugins)
+                }
+            })
+        );
 
+        console.log( _this._plugins );
 
-        return postcss(plugins)
+        return postcss( _this._plugins )
             .process(css, {
                 from: filename,
                 to: filename,
                 map: _this._sourcemap,
-                parser: _this._parser
+                parser: sugarss
             })
             .then(function (result) {
                 return result.css;

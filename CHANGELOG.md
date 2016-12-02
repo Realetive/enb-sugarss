@@ -1,3 +1,6 @@
+* 0.1.1
+  * add sugarss support
+
 * 0.1.0
   * use `CssSyntaxError` check
   * use async API
