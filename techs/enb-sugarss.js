@@ -64,8 +64,6 @@ module.exports = buildFlow.create()
             })
         );
 
-        console.log( _this._plugins );
-
         return postcss( _this._plugins )
             .process(css, {
                 from: filename,
